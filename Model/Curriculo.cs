@@ -35,6 +35,7 @@ namespace CurriculoApi.Model
         public DateTime DataEnvio { get; set; }
 
         [Required]
-        public byte[] Arquivo { get; set; }
+        public Boolean Ativo { get; set; }
+
     }
 }

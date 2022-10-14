@@ -56,6 +56,14 @@ namespace CurriculoApi.Controllers
 
             try
             {
+               await _context.SaveChangesAsync();
+
+                Historico hs = new Historico();
+                hs.IdCurriculo = id;
+                hs.Data = DateTime.Now;
+                hs.Detalhes = "Atualização do Curriculo CPF: " + curriculo.Cpf;
+
+                _context.Historico.Add(hs);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
