@@ -88,11 +88,11 @@ namespace CurriculoApi.Controllers
         {
           
             _context.Curriculo.Add(curriculo);
-            var idCurriculo =  await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
 
             Historico hs = new Historico();
-            hs.IdCurriculo = idCurriculo;
+            hs.IdCurriculo = curriculo.Id;
             hs.Data = DateTime.Now;
             hs.Detalhes = "Novo Curriculo CPF: " + curriculo.Cpf;
 
@@ -112,8 +112,18 @@ namespace CurriculoApi.Controllers
             {
                 return NotFound();
             }
+            curriculo.Ativo = false;
+            //_context.Curriculo.Remove(curriculo)
 
-            _context.Curriculo.Remove(curriculo);
+            _context.Entry(curriculo).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            Historico hs = new Historico();
+            hs.IdCurriculo = id;
+            hs.Data = DateTime.Now;
+            hs.Detalhes = "Exclusão(Inativo) do Curriculo CPF: " + curriculo.Cpf;
+
+            _context.Historico.Add(hs);
             await _context.SaveChangesAsync();
 
             return NoContent();
